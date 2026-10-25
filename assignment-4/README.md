@@ -1,57 +1,81 @@
-# Sample Hardhat 3 Project (`mocha` and `ethers`)
+# Assignment 4 — Smart Contracts
 
-This project showcases a Hardhat 3 project using `mocha` for tests and the `ethers` library for Ethereum interactions.
+## Overview
 
-To learn more about Hardhat 3, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3](https://hardhat.org/hardhat3-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+This project contains two Solidity smart contracts deployed to the Ethereum Sepolia test network using Hardhat and Hardhat Ignition.
 
-## Project Overview
+## Technologies
 
-This example project includes:
+- Solidity
+- Hardhat 3
+- Hardhat Ignition
+- TypeScript
+- Ethereum Sepolia test network
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using `mocha` and ethers.js
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+## Smart Contracts
 
-## Usage
+### 1. Counter
 
-### Running Tests
+**Source:** `contracts/Counter.sol`
 
-To run all the tests in the project, execute the following command:
+A simple counter contract that stores an unsigned integer.
 
-```shell
-npx hardhat test
+Functions:
+- `inc()` — increments the counter by 1.
+- `incBy(uint by)` — increments the counter by a specified positive value.
+
+The deployment module calls `incBy(5)` after deploying the contract.
+
+- **Contract address:** `0x03CFdAfFBaCab89f58b3714A75b9ADeDAB32e772`
+- **Transaction:** https://sepolia.etherscan.io/tx/0x22fa33081c61df62df44a66b0e381c8ad1d0eb5602c2d2e3856b29a2a2e67da1
+- **Contract on Etherscan:** https://sepolia.etherscan.io/address/0x03CFdAfFBaCab89f58b3714A75b9ADeDAB32e772
+
+### 2. Greeter
+
+**Source:** `contracts/Greeter.sol`
+
+A contract that stores a greeting when it is deployed.
+
+The deployment module passes `Alex` to the constructor, producing the greeting `Hello, Alex!`.
+
+The `greet()` function returns the stored greeting.
+
+- **Contract address:** `0x703Eb0b36C2a075627F3C57b384db6993B71483A`
+- **Transaction:** https://sepolia.etherscan.io/tx/0xe62863edd9d2b82701cb0be1c81ff73a2df341802bb33a7b1492093734c38cf3
+- **Contract on Etherscan:** https://sepolia.etherscan.io/address/0x703Eb0b36C2a075627F3C57b384db6993B71483A
+
+## Project Structure
+
+- `contracts/` — Solidity smart contracts.
+- `ignition/modules/` — Hardhat Ignition deployment modules.
+- `scripts/` — scripts for interacting with contracts.
+- `test/` — contract tests.
+- `hardhat.config.ts` — Hardhat configuration.
+
+## Running the Project
+
+Install dependencies:
+
+```bash
+npm install
 ```
 
-You can also selectively run the Solidity or `mocha` tests:
+Compile the contracts:
 
-```shell
-npx hardhat test solidity
-npx hardhat test mocha
+```bash
+npx hardhat build
 ```
 
-### Make a deployment to Sepolia
+Deploy the Counter contract to Sepolia:
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
-
-To run the deployment to a local chain:
-
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
+```bash
+npx hardhat ignition deploy ignition/modules/Counter.ts --network sepolia
 ```
 
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
+Deploy the Greeter contract to Sepolia:
 
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
+```bash
+npx hardhat ignition deploy ignition/modules/Greeter.ts --network sepolia
 ```
 
-After setting the variable, you can run the deployment with the Sepolia network:
-
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
-```
+Deployment requires a configured Sepolia RPC URL and a funded test account. Sensitive configuration values must be stored securely and must not be committed to GitHub.
